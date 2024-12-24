@@ -6,12 +6,12 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 11:29:31 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/23 16:30:46 by asafrono         ###   ########.fr       */
+/*   Updated: 2024/12/24 13:43:25 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
-#define PHILOSOPHERS_H
+# define PHILOSOPHERS_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -22,9 +22,9 @@
 
 typedef struct s_fork
 {
-    pthread_mutex_t mutex;
-    int id;
-} t_fork;
+	pthread_mutex_t	mutex;
+	int				id;
+}	t_fork;
 
 // number_of_philosophers = nop
 // time_to_die = ttd
@@ -48,11 +48,11 @@ typedef struct s_philo
 	int				tts;
 	int				notepme;
 	long long		lmt;
-    int				me;
-    t_fork			*lf;
-    t_fork			*rf;
-    pthread_t		thread;
-    struct s_data	*data;
+	int				me;
+	t_fork			*lf;
+	t_fork			*rf;
+	pthread_t		thread;
+	struct s_data	*data;
 
 }	t_philo;
 
@@ -61,14 +61,14 @@ typedef struct s_data
 	t_philo			*philos;
 	t_fork			*forks;
 	pthread_mutex_t	write_mutex;
-	pthread_mutex_t stop_mutex;
+	pthread_mutex_t	stop_mutex;
 	long long		start_time;
 	int				simulation_stop;
-} t_data;
+}	t_data;
 
 int			is_valid_num(char *str);
 int			ft_atoi(const char *str);
-void		*philosopher_routine(void *arg);
+void		*philo_routine(void *arg);
 void		*monitor(void *arg);
 void		init_data(t_data *data, int argc, char **argv);
 void		init_philo(t_philo *philo, t_data *data, int argc, char **argv);
@@ -78,6 +78,5 @@ void		cleanup(t_data *data);
 long long	get_current_time(void);
 void		print_status(t_philo *philo, char *status);
 void		ft_usleep(int ms);
-void		*monitor(void *arg);
 
 #endif

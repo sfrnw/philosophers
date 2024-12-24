@@ -6,19 +6,19 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 11:45:20 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/23 16:19:24 by asafrono         ###   ########.fr       */
+/*   Updated: 2024/12/24 13:47:54 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int is_valid_num(char *str)
+int	is_valid_num(char *str)
 {
-	long long num;
-	num = 0;
+	long long	num;
 
-	while (*str == ' ' || *str == '\t' || *str == '\n' ||
-			*str == '\v' || *str == '\f' || *str == '\r')
+	num = 0;
+	while (*str == ' ' || *str == '\t' || *str == '\n'
+		|| *str == '\v' || *str == '\f' || *str == '\r')
 		str++;
 	if (*str == '+' || *str == '-')
 		return (0);
@@ -61,24 +61,28 @@ int	ft_atoi(const char *str)
 	return (result * sign);
 }
 
-long long get_current_time(void)
+long long	get_current_time(void)
 {
-	struct timeval tv;
+	struct timeval	tv;
+
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void print_status(t_philo *philo, char *status)
+void	print_status(t_philo *philo, char *status)
 {
 	pthread_mutex_lock(&philo->data->write_mutex);
 	if (!philo->data->simulation_stop)
-		printf("%lld %d %s\n", get_current_time() - philo->data->start_time, philo->id, status);
+		printf("%lld %d %s\n", get_current_time()
+			- philo->data->start_time, philo->id, status);
 	pthread_mutex_unlock(&philo->data->write_mutex);
 }
 
-void ft_usleep(int ms)
+void	ft_usleep(int ms)
 {
-	long long start = get_current_time();
+	long long	start;
+
+	start = get_current_time();
 	while (get_current_time() - start < ms)
 		usleep(100);
 }

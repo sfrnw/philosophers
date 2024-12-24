@@ -6,7 +6,7 @@
 #    By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/23 15:03:56 by asafrono          #+#    #+#              #
-#    Updated: 2024/12/23 15:04:29 by asafrono         ###   ########.fr        #
+#    Updated: 2024/12/24 13:32:09 by asafrono         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ RM = rm -rf
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRCS = main.c init.c utils.c
+SRCS = main.c init.c utils.c routine.c monitor.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
