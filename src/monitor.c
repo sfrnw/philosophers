@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 13:30:00 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/24 13:34:59 by asafrono         ###   ########.fr       */
+/*   Updated: 2024/12/24 14:17:25 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ void	*monitor(void *arg)
 		}
 		if (check_simulation_end(data, all_ate))
 			return (NULL);
-		usleep(100);
+		usleep(5);
 	}
 }
