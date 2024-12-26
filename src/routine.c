@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 12:01:13 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/26 16:31:01 by asafrono         ###   ########.fr       */
+/*   Updated: 2024/12/26 16:47:25 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,8 @@ static int	check_stop(t_philo *philo)
 static void	philo_think(t_philo *philo)
 {
 	long long	safe_think_time;
-	long long	time_since_last_meal;
 
-	time_since_last_meal = get_current_time() - philo->lmt;
-	safe_think_time = philo->ttd - time_since_last_meal - philo->tte - 20;
+	safe_think_time = (philo->tte + philo->tts) / 2 - 20;
 	if (safe_think_time > philo->ttd / 3)
         safe_think_time = philo->ttd / 3;
 	if (safe_think_time < 1)
