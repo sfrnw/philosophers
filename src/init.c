@@ -6,12 +6,18 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 14:12:43 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/24 14:15:37 by asafrono         ###   ########.fr       */
+/*   Updated: 2024/12/26 14:34:26 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+// Initializes a single philosopher's attributes:
+// Sets parameters from command line arguments
+// Sets last meal time (lmt) to simulation start time
+// Initializes number of times each philosopher must eat (notepme)
+// Sets meals eaten counter (me) to 0
+// Links philosopher to main data structure
 void	init_philo(t_philo *philo, t_data *data, int argc, char **argv)
 {
 	philo->nop = ft_atoi(argv[1]);
@@ -27,24 +33,12 @@ void	init_philo(t_philo *philo, t_data *data, int argc, char **argv)
 	philo->data = data;
 }
 
-static int	allocate_memory(t_data *data, int num_philos)
-{
-	data->philos = malloc(sizeof(t_philo) * num_philos);
-	if (!data->philos)
-	{
-		write(2, "MA failed for philosophers\n", 27);
-		return (0);
-	}
-	data->forks = malloc(sizeof(t_fork) * num_philos);
-	if (!data->forks)
-	{
-		free(data->philos);
-		write(2, "MA failed for forks\n", 20);
-		return (0);
-	}
-	return (1);
-}
-
+// Initializes the main data structure:
+// Initializes pointers to NULL and simulation_stop flag to 0
+// Sets simulation start time
+// Initializes mutexes for writing and stopping simulation
+// Allocates memory for philosophers and forks
+// Creates and initializes all philosopher structures
 void	init_data(t_data *data, int argc, char **argv)
 {
 	int	i;
@@ -67,6 +61,11 @@ void	init_data(t_data *data, int argc, char **argv)
 	}
 }
 
+// Sets up philosopher threads and fork assignments:
+// Assigns left and right forks to each philosopher
+// Creates a thread for each philosopher using philo_routine
+// Handles thread creation failures with proper cleanup
+// Returns 0 on success, 1 on failure
 int	init_philosophers(t_data *data)
 {
 	int	i;
@@ -93,6 +92,11 @@ int	init_philosophers(t_data *data)
 	return (0);
 }
 
+// Initializes the forks:
+// Creates mutex for each fork
+// Assigns unique ID to each fork
+// Handles mutex initialization failures with proper cleanup
+// Ensures proper synchronization between philosophers
 void	init_forks(t_data *data)
 {
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 11:29:31 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/24 13:43:25 by asafrono         ###   ########.fr       */
+/*   Updated: 2024/12/26 14:32:24 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,22 @@ typedef struct s_data
 	int				simulation_stop;
 }	t_data;
 
-int			is_valid_num(char *str);
-int			ft_atoi(const char *str);
+//routine
 void		*philo_routine(void *arg);
+//monitor
 void		*monitor(void *arg);
-void		init_data(t_data *data, int argc, char **argv);
+//init
 void		init_philo(t_philo *philo, t_data *data, int argc, char **argv);
+void		init_data(t_data *data, int argc, char **argv);
 int			init_philosophers(t_data *data);
 void		init_forks(t_data *data);
-void		cleanup(t_data *data);
+//utils
+int			is_valid_num(char *str);
+int			ft_atoi(const char *str);
 long long	get_current_time(void);
 void		print_status(t_philo *philo, char *status);
 void		ft_usleep(int ms);
+void		cleanup(t_data *data);
+int			allocate_memory(t_data *data, int num_philos);
 
 #endif
