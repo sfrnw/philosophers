@@ -6,12 +6,18 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 11:45:20 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/26 13:34:59 by asafrono         ###   ########.fr       */
+/*   Updated: 2024/12/26 16:21:04 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+// Validates if a string represents a valid number:
+// Skips whitespace characters at the start
+// Rejects strings with '+' or '-' signs
+// Checks if string contains only digits
+// Ensures number doesn't exceed INT_MAX
+// Returns 1 if valid, 0 if invalid
 int	is_valid_num(char *str)
 {
 	long long	num;
@@ -61,6 +67,11 @@ int	ft_atoi(const char *str)
 	return (result * sign);
 }
 
+// Gets current time in milliseconds:
+// Uses gettimeofday to get current time
+// Converts seconds to milliseconds
+// Adds microseconds converted to milliseconds
+// Returns total milliseconds since epoch
 long long	get_current_time(void)
 {
 	struct timeval	tv;
@@ -69,6 +80,11 @@ long long	get_current_time(void)
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
+// Prints philosopher status in a thread-safe manner:
+// Locks write mutex to prevent message mixing
+// Checks if simulation is still running
+// Prints timestamp, philosopher ID, and status
+// Unlocks mutex after printing
 void	print_status(t_philo *philo, char *status)
 {
 	pthread_mutex_lock(&philo->data->write_mutex);
@@ -78,11 +94,16 @@ void	print_status(t_philo *philo, char *status)
 	pthread_mutex_unlock(&philo->data->write_mutex);
 }
 
+// Custom sleep function for precise timing:
+// Records start time
+// Sleeps in small intervals (20μs)
+// Continues until desired milliseconds have passed
+// More precise than standard usleep for longer durations
 void	ft_usleep(int ms)
 {
 	long long	start;
 
 	start = get_current_time();
 	while (get_current_time() - start < ms)
-		usleep(100);
+		usleep(20);
 }
