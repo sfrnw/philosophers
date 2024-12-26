@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 12:01:13 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/26 14:35:00 by asafrono         ###   ########.fr       */
+/*   Updated: 2024/12/26 15:03:23 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	check_stop(t_philo *philo)
 // 	Time since last meal
 // 	Time to die
 // 	Time needed to eat
-// Limits thinking time to 1/3 of time_to_die to prevent starvation
+// Limits thinking time to time_to_die/nop to prevent starvation
 // Ensures minimum thinking time of 1ms
 // Prints thinking status and sleeps for calculated duration
 static void	philo_think(t_philo *philo)
@@ -41,8 +41,8 @@ static void	philo_think(t_philo *philo)
 
 	time_since_last_meal = get_current_time() - philo->lmt;
 	safe_think_time = philo->ttd - time_since_last_meal - philo->tte;
-	if (safe_think_time > philo->ttd / 3)
-		safe_think_time = philo->ttd / 3;
+	if (safe_think_time > philo->ttd / philo->nop)
+		safe_think_time = philo->ttd / philo->nop;
 	if (safe_think_time < 1)
 		safe_think_time = 1;
 	print_status(philo, "is thinking");
@@ -77,9 +77,9 @@ static void	philo_eat(t_philo *philo)
 	philo->lmt = get_current_time();
 	ft_usleep(philo->tte);
 	philo->me++;
-	print_status(philo, "has put the forks back");
 	pthread_mutex_unlock(&philo->lf->mutex);
 	pthread_mutex_unlock(&philo->rf->mutex);
+	print_status(philo, "has put the forks back");
 }
 
 // Manages philosopher's sleeping phase:
