@@ -1,0 +1,6 @@
+libft/obj/
+libft/.bonus
+libft/libft.a
+.vscode/
+obj/
+minishell

@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 13:29:07 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/26 14:37:06 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:41:12 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,12 @@ int	allocate_memory(t_data *data, int num_philos)
 {
 	data->philos = malloc(sizeof(t_philo) * num_philos);
 	if (!data->philos)
-	{
-		write(2, "MA failed for philosophers\n", 27);
-		return (0);
-	}
+		return (write(2, "MA failed for philosophers\n", 27), 0);
+	memset(data->philos, 0, sizeof(t_philo) * num_philos);
 	data->forks = malloc(sizeof(t_fork) * num_philos);
 	if (!data->forks)
-	{
-		free(data->philos);
-		write(2, "MA failed for forks\n", 20);
-		return (0);
-	}
+		return (free(data->philos), write(2, "MA failed for forks\n", 20), 0);
+	memset(data->forks, 0, sizeof(t_fork) * num_philos);
 	return (1);
 }
 
@@ -58,8 +53,7 @@ void	cleanup(t_data *data)
 			pthread_join(data->philos[i].thread, NULL);
 		pthread_mutex_destroy(&data->forks[i].mutex);
 	}
-	pthread_mutex_destroy(&data->write_mutex);
-	pthread_mutex_destroy(&data->stop_mutex);
+	pthread_mutex_destroy(&data->simulation_mutex);
 	free(data->philos);
 	free(data->forks);
 }

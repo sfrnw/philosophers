@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 11:26:21 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/26 15:41:18 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/10 11:57:16 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,11 @@
 // Returns 1 if arguments are valid, 0 otherwise
 int	validate_arguments(int argc, char **argv)
 {
-	if (argc == 6 && is_valid_num(argv[1]) && is_valid_num(argv[2])
-		&& is_valid_num(argv[3]) && is_valid_num(argv[4])
-		&& is_valid_num(argv[5]))
-		return (1);
-	if (argc == 5 && is_valid_num(argv[1]) && is_valid_num(argv[2])
-		&& is_valid_num(argv[3]) && is_valid_num(argv[4]))
-		return (1);
-	return (0);
+	return ((argc == 6 && is_valid_num(argv[1]) && is_valid_num(argv[2])
+			&& is_valid_num(argv[3]) && is_valid_num(argv[4])
+			&& is_valid_num(argv[5])) || (argc == 5 && is_valid_num(argv[1])
+			&& is_valid_num(argv[2]) && is_valid_num(argv[3])
+			&& is_valid_num(argv[4])));
 }
 
 // Initialization:
@@ -37,26 +34,21 @@ int	validate_arguments(int argc, char **argv)
 // The main function follows a clear sequence: 
 // validate → initialize → simulate → cleanup,
 // with proper error handling at each step
+
 int	main(int argc, char **argv)
 {
 	t_data		data;
 	pthread_t	monitor_thread;
 
 	monitor_thread = 0;
-	if (validate_arguments(argc, argv))
-	{
-		init_data(&data, argc, argv);
-		init_forks(&data);
-		if (init_philosophers(&data) != 0)
-			return (cleanup(&data), 1);
-		if (pthread_create(&monitor_thread, NULL, monitor, &data) != 0)
-			return (write(2, "Failed to create monitor thread\n", 32),
-				cleanup(&data), 1);
-		pthread_join(monitor_thread, NULL);
-		cleanup(&data);
-		write(1, "Simulation completed\n", 21);
-	}
-	else
+	if (!validate_arguments(argc, argv))
 		return (write(2, "Invalid arguments\n", 18), 1);
-	return (0);
+	if (init_data(&data, argc, argv) != 0 || init_forks(&data) != 0
+		|| init_philosophers(&data) != 0)
+		return (write(2, "Initialization failed\n", 23), cleanup(&data), 1);
+	if (pthread_create(&monitor_thread, NULL, monitor, &data) != 0)
+		return (write(2, "Failed to create monitor thread\n", 32),
+			cleanup(&data), 1);
+	pthread_join(monitor_thread, NULL);
+	return (cleanup(&data), write(1, "Simulation completed\n", 21), 0);
 }

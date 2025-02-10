@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 11:45:20 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/26 16:21:04 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:21:58 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ long long	get_current_time(void)
 // Unlocks mutex after printing
 void	print_status(t_philo *philo, char *status)
 {
-	pthread_mutex_lock(&philo->data->write_mutex);
+	pthread_mutex_lock(&philo->data->simulation_mutex);
 	if (!philo->data->simulation_stop)
 		printf("%lld %d %s\n", get_current_time()
 			- philo->data->start_time, philo->id, status);
-	pthread_mutex_unlock(&philo->data->write_mutex);
+	pthread_mutex_unlock(&philo->data->simulation_mutex);
 }
 
 // Custom sleep function for precise timing:

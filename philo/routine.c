@@ -6,7 +6,7 @@
 /*   By: asafrono <asafrono@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 12:01:13 by asafrono          #+#    #+#             */
-/*   Updated: 2024/12/26 16:47:25 by asafrono         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:35:25 by asafrono         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static int	check_stop(t_philo *philo)
 {
 	int	should_stop;
 
-	pthread_mutex_lock(&philo->data->stop_mutex);
+	pthread_mutex_lock(&philo->data->simulation_mutex);
 	should_stop = philo->data->simulation_stop;
-	pthread_mutex_unlock(&philo->data->stop_mutex);
+	pthread_mutex_unlock(&philo->data->simulation_mutex);
 	return (should_stop);
 }
 
@@ -38,9 +38,9 @@ static void	philo_think(t_philo *philo)
 {
 	long long	safe_think_time;
 
-	safe_think_time = (philo->tte + philo->tts) / 2 - 20;
+	safe_think_time = (philo->tte + philo->tts) / 2 - 10;
 	if (safe_think_time > philo->ttd / 3)
-        safe_think_time = philo->ttd / 3;
+		safe_think_time = philo->ttd / 3;
 	if (safe_think_time < 1)
 		safe_think_time = 1;
 	print_status(philo, "is thinking");
@@ -72,12 +72,14 @@ static void	philo_eat(t_philo *philo)
 		print_status(philo, "has taken a fork");
 	}
 	print_status(philo, "is eating");
+	pthread_mutex_lock(&philo->data->simulation_mutex);
 	philo->lmt = get_current_time();
-	ft_usleep(philo->tte);
 	philo->me++;
+	pthread_mutex_unlock(&philo->data->simulation_mutex);
+	ft_usleep(philo->tte);
 	pthread_mutex_unlock(&philo->lf->mutex);
 	pthread_mutex_unlock(&philo->rf->mutex);
-	// print_status(philo, "has put the forks back");
+	print_status(philo, "has put the forks back");
 }
 
 // Manages philosopher's sleeping phase:
